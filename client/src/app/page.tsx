@@ -1,8 +1,6 @@
+import { RepairsJournal } from "./widgets/RepairsJournal";
 
 export default function Home() {
-  return (
-    <>
-      123123
-    </>
-  )
+  return <RepairsJournal />;
 }
+

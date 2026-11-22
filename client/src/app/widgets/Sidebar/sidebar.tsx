@@ -2,7 +2,7 @@ import Navigations from './navigations'
 
 const AppSidebar = () => {
 	return (
-		<aside className="h-screen w-64 bg-surface-container-lowest border-r border-outline-variant/30 z-50 flex flex-col justify-between">
+		<aside className="min-h-full w-64 bg-surface-container-lowest border-r border-outline-variant/30 z-50 flex flex-col justify-between">
 			<div className="flex flex-col">
 				<div className="h-16 flex items-center gap-3 px-space-xl border-b border-outline-variant/30">
 					<img

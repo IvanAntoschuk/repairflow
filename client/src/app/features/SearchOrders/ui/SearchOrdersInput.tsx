@@ -1,7 +1,7 @@
-import { Search } from 'lucide-react'
+import { Search } from "lucide-react";
 
 interface SearchOrdersInputProps {
-  placeholder?: string
+  placeholder?: string;
 }
 
 export const SearchOrdersInput = ({
@@ -9,9 +9,11 @@ export const SearchOrdersInput = ({
 }: SearchOrdersInputProps) => {
   return (
     <div className="relative w-full">
-      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-outline">
-        <Search size={20} />
-      </span>
+      <Search
+        size={20}
+        strokeWidth={1.8}
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
+      />
       <input
         type="search"
         aria-label={placeholder}
@@ -19,5 +21,5 @@ export const SearchOrdersInput = ({
         className="w-full rounded-lg border border-outline-variant/50 bg-surface-container-low py-1.5 pr-space-md pl-10 font-body-default text-body-default text-on-surface placeholder:text-outline transition-all focus:border-primary focus:bg-surface-container-lowest focus:outline-none"
       />
     </div>
-  )
-}
+  );
+};
