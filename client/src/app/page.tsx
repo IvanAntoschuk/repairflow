@@ -1,6 +1,6 @@
-import { RepairsJournal } from "./widgets/RepairsJournal";
+import AdminApp from "./admin/AdminApp";
 
 export default function Home() {
-  return <RepairsJournal />;
+  return <AdminApp />;
 }
 

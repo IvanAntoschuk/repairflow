@@ -1,5 +1,8 @@
+import { prisma } from "@server/lib/prisma"
 import { CirclePlus, HomeIcon, Settings, Toolbox } from 'lucide-react'
 import { navLink } from './sidebar.types'
+
+const orderCount = await prisma.order.count().then((count) => count.toFixed()).catch(() => '0')
 
 const navigations: navLink[] = [
 	{
@@ -14,7 +17,7 @@ const navigations: navLink[] = [
 		name: 'Замовлення',
 		href: '#',
 		dataPath: 'zamovlennya',
-		badge: '24',
+		badge: orderCount,
 		icon: <Toolbox size={20} color="#494551" />,
 	},
 	{
@@ -36,6 +39,9 @@ const navigations: navLink[] = [
 const baseLinkClass = 'flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all'
 
 const Navigations = () => {
+
+
+
 	return (
 		<nav className="flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary font-body-strong">
 			{navigations.map((nav) => (

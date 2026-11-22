@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
 @import "tailwindcss";
 
+html,
 body {
-  background: #fdf7ff;
+  background: #fdf7ff !important;
+}
+
+body {
   font-family: "Inter", sans-serif;
 }
 
