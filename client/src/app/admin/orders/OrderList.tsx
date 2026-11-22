@@ -10,12 +10,13 @@ import {
 import {
   ChevronLeft,
   ChevronRight,
-  EllipsisVertical,
   Eye,
+  Plus,
   Printer,
   Smartphone,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 
 const statusConfig: Record<
   string,
@@ -243,6 +244,10 @@ export const OrderList = () => (
           </div>
           <p className="mt-1 font-caption-label text-caption-label text-on-surface-variant">Управління замовленнями, пошук по клієнтах та відстеження статусів</p>
         </div>
+        <Link href="/orders/new" className="inline-flex items-center gap-2 self-start rounded-lg bg-primary-container px-space-lg py-1.5 font-body-strong text-body-strong text-on-primary shadow-sm transition-all hover:bg-primary">
+          <Plus size={18} strokeWidth={1.8} />
+          <span>Нове замовлення</span>
+        </Link>
       </div>
       <OrdersFilters />
       <OrdersTable />

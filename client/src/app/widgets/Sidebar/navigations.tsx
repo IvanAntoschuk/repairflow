@@ -1,74 +1,40 @@
-import { prisma } from "@server/lib/prisma"
-import { CirclePlus, HomeIcon, Settings, Toolbox } from 'lucide-react'
-import { navLink } from './sidebar.types'
+"use client";
 
-const orderCount = await prisma.order.count().then((count) => count.toFixed()).catch(() => '0')
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { CirclePlus, HomeIcon, Settings, Toolbox } from "lucide-react";
 
-const navigations: navLink[] = [
-	{
-		id: 1,
-		name: 'Головна',
-		href: '#',
-		dataPath: 'holovna',
-		icon: <HomeIcon size={20} color="#494551" />,
-	},
-	{
-		id: 2,
-		name: 'Замовлення',
-		href: '#',
-		dataPath: 'zamovlennya',
-		badge: orderCount,
-		icon: <Toolbox size={20} color="#494551" />,
-	},
-	{
-		id: 3,
-		name: 'Створити замовлення',
-		href: '#',
-		dataPath: 'stvoryty-zamovlennya',
-		icon: <CirclePlus size={20} color="#494551" />,
-	},
-	{
-		id: 4,
-		name: 'Налаштування',
-		href: '#',
-		dataPath: 'nalashtuvannya',
-		icon: <Settings size={20} color="#494551" />,
-	},
-]
+const navigations = [
+  { name: "Головна", href: "/", icon: HomeIcon, active: (p: string) => p === "/" },
+  { name: "Замовлення", href: "/", icon: Toolbox, active: (_: string) => false },
+  { name: "Створити замовлення", href: "/orders/new", icon: CirclePlus, active: (p: string) => p === "/orders/new" },
+  { name: "Налаштування", href: "#", icon: Settings, active: (_: string) => false },
+];
 
-const baseLinkClass = 'flex items-center px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all'
+const baseLinkClass =
+  "flex items-center gap-3 px-space-md py-space-sm rounded-lg hover:bg-surface-container-high transition-all";
 
 const Navigations = () => {
+  const pathname = usePathname();
 
+  return (
+    <nav className="flex flex-col gap-1">
+      {navigations.map((nav) => {
+        const active = nav.href !== "#" && nav.active(pathname);
+        const Icon = nav.icon;
+        return (
+          <Link
+            key={nav.name}
+            href={nav.href}
+            className={`${baseLinkClass} ${active ? "bg-primary-container text-on-primary font-body-strong" : "text-on-surface-variant hover:text-on-surface"}`}
+          >
+            <Icon size={20} strokeWidth={1.8} />
+            <span className="font-body-default text-body-default">{nav.name}</span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+};
 
-
-	return (
-		<nav className="flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary font-body-strong">
-			{navigations.map((nav) => (
-				<a
-					key={nav.id}
-					href={nav.href}
-					data-path={nav.dataPath}
-					className={nav.badge ? `${baseLinkClass} justify-between` : `${baseLinkClass} gap-3`}
-				>
-					{nav.badge ? (
-						<>
-							<div className="flex items-center gap-3">
-								{nav.icon}
-								<span className="font-body-default text-body-default">{nav.name}</span>
-							</div>
-							<span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-data-mono-sm text-data-mono-sm">{nav.badge}</span>
-						</>
-					) : (
-						<>
-							{nav.icon}
-							<span className="font-body-default text-body-default">{nav.name}</span>
-						</>
-					)}
-				</a>
-			))}
-		</nav>
-	)
-}
-
-export default Navigations
+export default Navigations;
