@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { Header } from "./widgets/Header"
 import AppSidebar from "./widgets/Sidebar/sidebar"
 
 const inter = Inter({
@@ -19,9 +20,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <AppSidebar />
-        <div className="pl-64 min-h-screen">{children}</div>
+      <body className="min-h-full bg-surface font-body-default text-on-surface">
+        <div className="flex min-h-screen">
+          <AppSidebar />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <Header />
+            <main className="flex-1 px-gutter-desktop">{children}</main>
+          </div>
+        </div>
       </body>
     </html>
   )
