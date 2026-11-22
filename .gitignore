@@ -46,3 +46,8 @@ next-env.d.ts
 .eslintcache
 .turbo
 .swc
+
+# agent tooling
+/.agents/
+opencode.json
+skills-lock.json
