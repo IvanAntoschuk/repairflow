@@ -7,8 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model HealthCheck {
-  id        Int      @id @default(autoincrement())
-  status    String
-  createdAt DateTime @default(now())
+model Order {
+  id            String   @id @default(uuid())
+  trackId       String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  customerPhone String
+  customerName  String
+  phonePassword String?
+  imei          String?  @unique
+  master        String
+  device        String
+  description   String
+  currentStatus String
+  price         Decimal
 }
