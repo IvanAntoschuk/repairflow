@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   ListBase,
@@ -6,7 +6,7 @@ import {
   useListContext,
   useNotify,
   useRefresh,
-} from "react-admin";
+} from "react-admin"
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,8 +15,8 @@ import {
   Printer,
   Smartphone,
   Trash2,
-} from "lucide-react";
-import Link from "next/link";
+} from "lucide-react"
+import Link from "next/link"
 
 const statusConfig: Record<
   string,
@@ -28,38 +28,38 @@ const statusConfig: Record<
   waiting_parts: { label: "Очікує запчастини", className: "bg-tertiary-fixed text-tertiary", dotClassName: "bg-tertiary" },
   ready: { label: "Готовий до видачі", className: "bg-secondary-fixed text-secondary font-bold", dotClassName: "bg-secondary" },
   completed: { label: "Завершено", className: "bg-surface-container-high text-outline", dotClassName: "bg-outline" },
-};
+}
 
 function StatusBadge({ status }: { status?: string }) {
   const cfg = statusConfig[status ?? ""] ?? {
     label: status || "—",
     className: "bg-surface-container-high text-on-surface-variant",
     dotClassName: "bg-outline",
-  };
+  }
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-caption-label text-caption-label ${cfg.className}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${cfg.dotClassName} ${cfg.pulse ? "animate-pulse" : ""}`} />
       {cfg.label}
     </span>
-  );
+  )
 }
 
 function formatDate(value?: string) {
-  if (!value) return { date: "—", label: "" };
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return { date: value, label: "" };
-  const date = d.toLocaleString("uk-UA", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }).replace(",", "");
-  const now = new Date();
-  const sameDay = d.toDateString() === now.toDateString();
-  const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
-  const label = sameDay ? "Сьогодні" : d.toDateString() === yesterday.toDateString() ? "Вчора" : d.toLocaleDateString("uk-UA", { day: "2-digit", month: "long" });
-  return { date, label };
+  if (!value) return { date: "—", label: "" }
+  const d = new Date(value)
+  if (Number.isNaN(d.getTime())) return { date: value, label: "" }
+  const date = d.toLocaleString("uk-UA", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }).replace(",", "")
+  const now = new Date()
+  const sameDay = d.toDateString() === now.toDateString()
+  const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1)
+  const label = sameDay ? "Сьогодні" : d.toDateString() === yesterday.toDateString() ? "Вчора" : d.toLocaleDateString("uk-UA", { day: "2-digit", month: "long" })
+  return { date, label }
 }
 
 function OrdersFilters() {
-  const { filterValues, setFilters, displayedFilters, showFilter } = useListContext();
-  const q = (filterValues.q as string) ?? "";
-  const status = (filterValues.currentStatus as string) ?? "";
+  const { filterValues, setFilters, displayedFilters, showFilter } = useListContext()
+  const q = (filterValues.q as string) ?? ""
+  const status = (filterValues.currentStatus as string) ?? ""
 
   return (
     <div className="flex flex-col gap-space-md rounded-xl bg-surface-container-lowest p-space-md shadow-sm">
@@ -101,30 +101,30 @@ function OrdersFilters() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function SearchIcon() {
   return (
-    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-  );
+    <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+  )
 }
 
 function OrdersTable() {
-  const { data, isPending, total } = useListContext();
-  const [deleteOne] = useDelete();
-  const notify = useNotify();
-  const refresh = useRefresh();
+  const { data, isPending, total } = useListContext()
+  const [deleteOne] = useDelete()
+  const notify = useNotify()
+  const refresh = useRefresh()
 
-  if (isPending) return <div className="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm text-on-surface-variant">Завантаження...</div>;
+  if (isPending) return <div className="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm text-on-surface-variant">Завантаження...</div>
 
   const onDelete = (id: string, trackId: string) => {
-    if (!confirm(`Видалити замовлення ${trackId}?`)) return;
+    if (!confirm(`Видалити замовлення ${trackId}?`)) return
     deleteOne("orders", { id, previousData: data?.find((r: any) => r.id === id) }, {
-      onSuccess: () => { notify("Замовлення видалено", { type: "info" }); refresh(); },
+      onSuccess: () => { notify("Замовлення видалено", { type: "info" }); refresh() },
       onError: () => notify("Помилка видалення", { type: "warning" }),
-    });
-  };
+    })
+  }
 
   return (
     <div className="flex flex-col overflow-hidden rounded-xl bg-surface-container-lowest shadow-sm">
@@ -136,7 +136,7 @@ function OrdersTable() {
               <th className="whitespace-nowrap px-4 py-3">Створено</th>
               <th className="whitespace-nowrap px-4 py-3">Клієнт</th>
               <th className="whitespace-nowrap px-4 py-3">Пристрій</th>
-              <th className="min-w-[240px] px-4 py-3">Несправність</th>
+              <th className="min-w-60 px-4 py-3">Несправність</th>
               <th className="whitespace-nowrap px-4 py-3">Майстер</th>
               <th className="whitespace-nowrap px-4 py-3 text-right">Ціна (₴)</th>
               <th className="whitespace-nowrap px-4 py-3 text-center">Статус</th>
@@ -145,7 +145,7 @@ function OrdersTable() {
           </thead>
           <tbody className="font-body-default text-body-default">
             {(data ?? []).map((order: any) => {
-              const created = formatDate(order.createdAt);
+              const created = formatDate(order.createdAt)
               return (
                 <tr key={order.id} className="group transition-colors hover:bg-surface-container-low">
                   <td className="whitespace-nowrap px-4 py-3.5">
@@ -192,7 +192,7 @@ function OrdersTable() {
                     </div>
                   </td>
                 </tr>
-              );
+              )
             })}
             {!data?.length && (
               <tr><td colSpan={9} className="px-4 py-10 text-center text-on-surface-variant">Замовлень немає</td></tr>
@@ -202,14 +202,14 @@ function OrdersTable() {
       </div>
       <OrdersFooter total={total ?? 0} />
     </div>
-  );
+  )
 }
 
 function OrdersFooter({ total }: { total: number }) {
-  const { page, perPage, setPage, setPerPage } = useListContext();
-  const from = total === 0 ? 0 : (page - 1) * perPage + 1;
-  const to = Math.min(page * perPage, total);
-  const pages = Math.max(1, Math.ceil(total / perPage));
+  const { page, perPage, setPage, setPerPage } = useListContext()
+  const from = total === 0 ? 0 : (page - 1) * perPage + 1
+  const to = Math.min(page * perPage, total)
+  const pages = Math.max(1, Math.ceil(total / perPage))
 
   return (
     <div className="flex flex-col items-center justify-between gap-space-md bg-surface-container-low px-space-lg py-space-md md:flex-row">
@@ -230,7 +230,7 @@ function OrdersFooter({ total }: { total: number }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export const OrderList = () => (
@@ -253,9 +253,9 @@ export const OrderList = () => (
       <OrdersTable />
     </div>
   </ListBase>
-);
+)
 
 function TotalBadge() {
-  const { total, isPending } = useListContext();
-  return <span className="rounded-full bg-surface-container px-2 py-0.5 font-data-mono-sm text-data-mono-sm text-on-surface-variant">{isPending ? "…" : total ?? 0} всього</span>;
+  const { total, isPending } = useListContext()
+  return <span className="rounded-full bg-surface-container px-2 py-0.5 font-data-mono-sm text-data-mono-sm text-on-surface-variant">{isPending ? "…" : total ?? 0} всього</span>
 }
