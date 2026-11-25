@@ -1,14 +1,7 @@
 import {
-  ChevronLeft,
-  ChevronRight,
-  EllipsisVertical,
-  Eye,
-  Printer,
-  Smartphone,
-  Zap,
-} from "lucide-react";
-import { repairOrders } from "../model/mock-data";
-import { RepairStatusBadge } from "./RepairStatusBadge";
+    ChevronLeft,
+    ChevronRight
+} from "lucide-react"
 
 export const RepairsTable = () => {
   return (
@@ -28,122 +21,21 @@ export const RepairsTable = () => {
               <th className="whitespace-nowrap px-4 py-3">Створено</th>
               <th className="whitespace-nowrap px-4 py-3">Клієнт</th>
               <th className="whitespace-nowrap px-4 py-3">Пристрій</th>
-              <th className="min-w-[240px] px-4 py-3">Несправність</th>
+              <th className="min-w-60 px-4 py-3">Несправність</th>
               <th className="whitespace-nowrap px-4 py-3">Майстер</th>
               <th className="whitespace-nowrap px-4 py-3 text-right">Ціна (₴)</th>
               <th className="whitespace-nowrap px-4 py-3 text-center">Статус</th>
               <th className="whitespace-nowrap px-4 py-3 text-center">Дії</th>
             </tr>
           </thead>
-          <tbody className="font-body-default text-body-default">
-            {repairOrders.map((order) => (
-              <tr
-                key={order.id}
-                className="group transition-colors hover:bg-surface-container-low"
-              >
-                <td className="px-4 py-3.5 text-center">
-                  <input
-                    type="checkbox"
-                    aria-label={`Вибрати ${order.id}`}
-                    className="h-4 w-4 cursor-pointer rounded accent-primary"
-                  />
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <span className="font-data-mono text-data-mono font-bold text-primary">
-                      {order.id}
-                    </span>
-                    {order.isExpress && (
-                      <span
-                        className="rounded bg-surface-container-high p-1 leading-none text-on-surface-variant"
-                        title="Експрес ремонт"
-                      >
-                        <Zap size={13} strokeWidth={1.8} />
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5">
-                  <div className="flex flex-col">
-                    <span className="font-data-mono-sm text-data-mono-sm text-on-surface">
-                      {order.createdAt}
-                    </span>
-                    <span className="font-caption-label text-caption-label text-outline">
-                      {order.createdLabel}
-                    </span>
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5">
-                  <div className="flex flex-col">
-                    <span className="font-body-strong text-body-strong text-on-surface">
-                      {order.customerName}
-                    </span>
-                    <span className="font-data-mono-sm text-data-mono-sm text-outline">
-                      {order.customerPhone}
-                    </span>
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5">
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-surface-container text-on-surface-variant">
-                      <Smartphone size={18} strokeWidth={1.8} />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-body-strong text-body-strong text-on-surface">
-                        {order.device}
-                      </span>
-                      <span className="font-caption-label text-caption-label text-outline">
-                        {order.deviceColor}
-                      </span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-4 py-3.5">
-                  <span className="line-clamp-1 text-on-surface">{order.issue}</span>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-surface-variant font-caption-label text-caption-label font-bold text-primary">
-                      {order.technician.initials}
-                    </span>
-                    <span className="font-caption-label text-caption-label text-on-surface">
-                      {order.technician.name}
-                    </span>
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5 text-right">
-                  <div className="flex flex-col items-end">
-                    <span className="font-data-mono text-data-mono font-bold text-on-surface">
-                      {order.price}
-                    </span>
-                    {order.priceNote && (
-                      <span className="font-data-mono-sm text-data-mono-sm text-outline">
-                        {order.priceNote}
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5 text-center">
-                  <RepairStatusBadge status={order.status} />
-                </td>
-                <td className="whitespace-nowrap px-4 py-3.5 text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    <ActionButton icon={Eye} label="Переглянути деталі" />
-                    <ActionButton icon={Printer} label="Друк квитанції" />
-                    <ActionButton icon={EllipsisVertical} label="Опції" />
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
         </table>
       </div>
       <RepairsTableFooter />
     </div>
-  );
-};
+  )
+}
 
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react"
 
 const ActionButton = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
   return (
@@ -155,8 +47,8 @@ const ActionButton = ({ icon: Icon, label }: { icon: LucideIcon; label: string }
     >
       <Icon size={18} strokeWidth={1.8} />
     </button>
-  );
-};
+  )
+}
 
 const RepairsTableFooter = () => {
   return (
@@ -219,15 +111,15 @@ const RepairsTableFooter = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const PageButton = ({
   active,
   children,
 }: {
-  active?: boolean;
-  children: React.ReactNode;
+  active?: boolean
+  children: React.ReactNode
 }) => {
   return (
     <button
@@ -240,5 +132,5 @@ const PageButton = ({
     >
       {children}
     </button>
-  );
-};
+  )
+}
