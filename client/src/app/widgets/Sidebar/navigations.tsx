@@ -5,8 +5,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navigations = [
-  { name: "Головна", href: "/", icon: HomeIcon, active: (p: string) => p === "/" },
-  { name: "Замовлення", href: "/", icon: Toolbox, active: (_: string) => false },
+  { name: "Головна", href: "/adminPanel", icon: HomeIcon, active: (p: string) => p === "/adminPanel" },
+  { name: "Замовлення", href: "/adminPanel", icon: Toolbox, active: (_: string) => false },
   { name: "Створити замовлення", href: "/orders/new", icon: CirclePlus, active: (p: string) => p === "/orders/new" },
   { name: "Налаштування", href: "#", icon: Settings, active: (_: string) => false },
 ]

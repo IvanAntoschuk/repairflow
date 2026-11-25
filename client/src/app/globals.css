@@ -86,6 +86,34 @@ body {
   --text-headline-section--line-height: 28px;
   --text-headline-section--font-weight: 600;
 
+  /* public client palette (separate from the purple CRM theme) */
+  --color-client-background: #fbf9f5;
+  --color-client-surface: #fbf9f5;
+  --color-client-surface-container-lowest: #ffffff;
+  --color-client-surface-container-low: #f5f3ef;
+  --color-client-surface-container: #efeeea;
+  --color-client-surface-container-high: #eae8e4;
+  --color-client-on-surface: #1b1c1a;
+  --color-client-on-surface-variant: #58423c;
+  --color-client-primary: #a43615;
+  --color-client-on-primary: #ffffff;
+  --color-client-primary-container: #c64e2b;
+  --color-client-on-primary-container: #fffbff;
+  --color-client-primary-fixed: #ffdbd1;
+  --color-client-on-primary-fixed: #3b0900;
+  --color-client-secondary: #5f5e5e;
+  --color-client-secondary-container: #e4e2e1;
+  --color-client-on-secondary-container: #656464;
+  --color-client-tertiary: #186a22;
+  --color-client-tertiary-fixed: #a3f69c;
+  --color-client-on-tertiary-fixed: #002204;
+  --color-client-error: #ba1a1a;
+  --color-client-error-container: #ffdad6;
+  --color-client-outline: #8b716a;
+  --color-client-outline-variant: #dfc0b7;
+  --font-client-headline: var(--font-manrope), Manrope, sans-serif;
+  --font-client-body: var(--font-inter), Inter, sans-serif;
+
   --radius-lg: 0.25rem;
   --radius-xl: 0.5rem;
   --radius-full: 0.75rem;

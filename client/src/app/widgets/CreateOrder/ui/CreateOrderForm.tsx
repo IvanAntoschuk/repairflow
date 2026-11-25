@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
+import { genTrackId } from '../types'
 
 type FormState = {
   trackId: string
@@ -52,18 +53,14 @@ const quickTags = [
   "Відновлення TrueTone",
 ]
 
-function genTrackId() {
-  const y = new Date().getFullYear()
-  const n = String(Math.floor(100 + Math.random() * 900))
-  return `RF-${y}-${n}`
-}
+
 
 export const CreateOrderForm = () => {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState<FormState>({
-    trackId: "",
+    trackId: "", // genTrackId() runs in useEffect so SSR markup stays stable
     customerPhone: "",
     customerName: "",
     device: "",
@@ -162,10 +159,7 @@ export const CreateOrderForm = () => {
             <ChevronRight size={14} className="text-outline" />
             <span className="font-semibold text-primary">Новий ремонт</span>
           </nav>
-          <div className="mt-1 flex items-baseline gap-space-md">
-            <h1 className="font-headline-section text-headline-section text-on-surface tracking-tight">Реєстрація нового замовлення</h1>
-            <span className="rounded-full bg-surface-container-high px-2.5 py-0.5 font-data-mono-sm text-data-mono-sm font-bold text-primary">Створення акту</span>
-          </div>
+          <h1 className="font-headline-section text-headline-section text-on-surface tracking-tight">Реєстрація нового замовлення</h1>
           <p className="max-w-2xl font-body-default text-body-default text-on-surface-variant">
             Внесіть інформацію про пристрій клієнта та контактні дані для створення замовлення.
           </p>

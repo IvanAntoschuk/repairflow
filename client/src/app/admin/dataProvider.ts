@@ -9,6 +9,7 @@ function normalizeOrder(item: any) {
 async function http(url: string, init?: RequestInit) {
   const res = await fetch(url, {
     ...init,
+    credentials: "include",
     headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
   });
   const json = await res.json().catch(() => ({}));
