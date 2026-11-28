@@ -111,6 +111,8 @@ body {
   --color-client-error-container: #ffdad6;
   --color-client-outline: #8b716a;
   --color-client-outline-variant: #dfc0b7;
+  --color-client-inverse-surface: #30312e;
+  --color-client-inverse-on-surface: #f2f1ec;
   --font-client-headline: var(--font-manrope), Manrope, sans-serif;
   --font-client-body: var(--font-inter), Inter, sans-serif;
 

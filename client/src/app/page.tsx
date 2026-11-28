@@ -1,5 +1,7 @@
 "use client"
 
+import type { OrderViewData } from "@/app/widgets/OrderView"
+import { OrderView } from "@/app/widgets/OrderView"
 import {
   ArrowRight,
   Headphones,
@@ -16,15 +18,23 @@ import { useState } from "react"
 
 type PageState = "default" | "loading" | "error"
 
-const tabClass = (active: boolean) =>
-  `flex-1 rounded-md px-2 py-1.5 text-[11px] font-medium tracking-wide transition-colors ${active
-    ? "bg-client-surface-container-lowest font-semibold text-client-on-surface shadow-sm"
-    : "text-client-on-surface-variant hover:text-client-on-surface"
-  }`
+// shortcut: демо-поиск по trackId, заменить запросом к БД
+async function findOrder(trackId: string): Promise<OrderViewData | null> {
+  try {
+    const response = await fetch(`http://localhost:4000/api/public-orders/track/${encodeURIComponent(trackId)}`)
+    if (!response.ok) return null
+    const json = await response.json()
+    return json?.data?.[0] ?? null
+  } catch {
+    return null
+  }
+}
 
 export default function Home() {
   const [state, setState] = useState<PageState>("default")
   const [trackId, setTrackId] = useState("RF-2026-001")
+  const [searchedId, setSearchedId] = useState("")
+  const [foundOrder, setFoundOrder] = useState<OrderViewData | null>(null)
 
   const switchState = (next: PageState) => {
     setState(next)
@@ -32,10 +42,33 @@ export default function Home() {
     if (next === "default") setTrackId("RF-2026-001")
   }
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSearchedId(trackId)
     switchState("loading")
-    window.setTimeout(() => switchState("error"), 1200)
+
+    window.setTimeout(async () => {
+      const order = await findOrder(trackId)
+      if (order) {
+        setFoundOrder(order)
+        setState("default")
+      } else {
+        setFoundOrder(null)
+        setState("error")
+      }
+    }, 1200)
+  }
+
+  if (foundOrder) {
+    return (
+      <OrderView
+        order={foundOrder}
+        onBack={() => {
+          setFoundOrder(null)
+          switchState("default")
+        }}
+      />
+    )
   }
 
   return (
@@ -78,7 +111,7 @@ export default function Home() {
                     <div className="flex flex-col gap-0.5">
                       <span className="text-xs font-semibold text-client-error">Помилка введення / Замовлення не знайдено</span>
                       <p className="text-[13px] text-client-on-surface-variant">
-                        Замовлення <span className="font-semibold tabular-nums text-client-on-surface">#RF-9999</span> не знайдено. Перевірте номер у квитанції або SMS та спробуйте знову.
+                        Замовлення <span className="font-semibold tabular-nums text-client-on-surface">#{searchedId || "RF-9999"}</span> не знайдено. Перевірте номер у квитанції або SMS та спробуйте знову.
                       </p>
                     </div>
                   </div>

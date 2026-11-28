@@ -63,12 +63,12 @@ function OrdersFilters() {
               className="w-full cursor-pointer appearance-none rounded-lg bg-surface-container-low py-2 pr-8 pl-3 font-body-default text-body-default text-on-surface focus:bg-surface-container-lowest focus:outline-none"
             >
               <option value="">Статус: Всі</option>
-              <option value="new">Нове</option>
-              <option value="diagnostics">Діагностика</option>
-              <option value="in_progress">В роботі</option>
-              <option value="waiting_parts">Очікує запчастини</option>
-              <option value="ready">Готово до видачі</option>
-              <option value="completed">Завершено</option>
+              <option value="Нове">Нове</option>
+              <option value="Діагностика">Діагностика</option>
+              <option value="В роботі">В роботі</option>
+              <option value="Очікує запчастини">Очікує запчастини</option>
+              <option value="Готово до видачі">Готово до видачі</option>
+              <option value="Завершено">Завершено</option>
             </select>
             <ChevronRight size={18} strokeWidth={1.8} className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 rotate-90 text-on-surface-variant" />
           </div>

@@ -38,11 +38,11 @@ const masters = [
 ]
 
 const statuses = [
-  { value: "new", label: "Нове" },
-  { value: "diagnostics", label: "Діагностика" },
-  { value: "in_progress", label: "В роботі" },
-  { value: "waiting_parts", label: "Очікує запчастини" },
-  { value: "ready", label: "Готово до видачі" },
+  { value: "Нове", label: "Нове" },
+  { value: "Діагностика", label: "Діагностика" },
+  { value: "В роботі", label: "В роботі" },
+  { value: "Очікує запчастини", label: "Очікує запчастини" },
+  { value: "Готово до видачі", label: "Готово до видачі" },
 ]
 
 const quickTags = [
@@ -70,7 +70,7 @@ export const CreateOrderForm = () => {
     description: "",
     price: "",
     master: masters[0],
-    currentStatus: "new",
+    currentStatus: "Нове",
   })
 
   useEffect(() => {
