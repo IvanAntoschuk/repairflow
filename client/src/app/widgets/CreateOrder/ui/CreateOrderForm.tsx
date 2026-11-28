@@ -1,7 +1,5 @@
-"use client";
+"use client"
 
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Check,
@@ -12,38 +10,40 @@ import {
   Phone,
   Printer,
   QrCode,
-  Save,
   Smartphone,
-  User,
-} from "lucide-react";
+  User
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
+import { genTrackId } from '../types'
 
 type FormState = {
-  trackId: string;
-  customerPhone: string;
-  customerName: string;
-  device: string;
-  imei: string;
-  phonePassword: string;
-  noPassword: boolean;
-  description: string;
-  price: string;
-  master: string;
-  currentStatus: string;
-};
+  trackId: string
+  customerPhone: string
+  customerName: string
+  device: string
+  imei: string
+  phonePassword: string
+  noPassword: boolean
+  description: string
+  price: string
+  master: string
+  currentStatus: string
+}
 
 const masters = [
   "Тарас Мельник (Інженер)",
   "Олександр В. (Старший технік)",
   "Ігор Костенко (Модульний майстер)",
-];
+]
 
 const statuses = [
-  { value: "new", label: "Нове" },
-  { value: "diagnostics", label: "Діагностика" },
-  { value: "in_progress", label: "В роботі" },
-  { value: "waiting_parts", label: "Очікує запчастини" },
-  { value: "ready", label: "Готово до видачі" },
-];
+  { value: "Нове", label: "Нове" },
+  { value: "Діагностика", label: "Діагностика" },
+  { value: "В роботі", label: "В роботі" },
+  { value: "Очікує запчастини", label: "Очікує запчастини" },
+  { value: "Готово до видачі", label: "Готово до видачі" },
+]
 
 const quickTags = [
   "Заміна скла",
@@ -51,20 +51,16 @@ const quickTags = [
   "Заміна батареї",
   "Чистка після води",
   "Відновлення TrueTone",
-];
+]
 
-function genTrackId() {
-  const y = new Date().getFullYear();
-  const n = String(Math.floor(100 + Math.random() * 900));
-  return `RF-${y}-${n}`;
-}
+
 
 export const CreateOrderForm = () => {
-  const router = useRouter();
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter()
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState<FormState>({
-    trackId: "",
+    trackId: "", // genTrackId() runs in useEffect so SSR markup stays stable
     customerPhone: "",
     customerName: "",
     device: "",
@@ -74,33 +70,33 @@ export const CreateOrderForm = () => {
     description: "",
     price: "",
     master: masters[0],
-    currentStatus: "new",
-  });
+    currentStatus: "Нове",
+  })
 
   useEffect(() => {
-    setForm((s) => (s.trackId ? s : { ...s, trackId: genTrackId() }));
-  }, []);
+    setForm((s) => (s.trackId ? s : { ...s, trackId: genTrackId() }))
+  }, [])
 
   const set = <K extends keyof FormState>(k: K, v: FormState[K]) =>
-    setForm((s) => ({ ...s, [k]: v }));
+    setForm((s) => ({ ...s, [k]: v }))
 
   const priceNum = useMemo(() => {
-    const n = Number(String(form.price).replace(/[^\d.]/g, ""));
-    return Number.isFinite(n) ? n : 0;
-  }, [form.price]);
+    const n = Number(String(form.price).replace(/[^\d.]/g, ""))
+    return Number.isFinite(n) ? n : 0
+  }, [form.price])
 
   const toggleTag = (tag: string) => {
     setForm((s) => {
-      const has = s.description.includes(tag);
+      const has = s.description.includes(tag)
       const description = has
         ? s.description.replace(tag, "").replace(/\s{2,}/g, " ").trim()
-        : s.description ? `${s.description}; ${tag}` : tag;
-      return { ...s, description };
-    });
-  };
+        : s.description ? `${s.description}; ${tag}` : tag
+      return { ...s, description }
+    })
+  }
 
   const submit = async () => {
-    setError(null);
+    setError(null)
     const required: Array<[keyof FormState, string]> = [
       ["trackId", "Номер замовлення"],
       ["customerPhone", "Телефон"],
@@ -110,19 +106,19 @@ export const CreateOrderForm = () => {
       ["price", "Вартість"],
       ["master", "Майстер"],
       ["currentStatus", "Статус"],
-    ];
+    ]
     for (const [k, label] of required) {
       if (!String(form[k]).trim()) {
-        setError(`Поле "${label}" обов'язкове`);
-        return;
+        setError(`Поле "${label}" обов'язкове`)
+        return
       }
     }
     if (!Number.isFinite(priceNum) || priceNum < 0) {
-      setError("Вартість має бути числом");
-      return;
+      setError("Вартість має бути числом")
+      return
     }
 
-    setSaving(true);
+    setSaving(true)
     try {
       const res = await fetch("http://localhost:4000/api/orders", {
         method: "POST",
@@ -139,20 +135,20 @@ export const CreateOrderForm = () => {
           master: form.master,
           currentStatus: form.currentStatus,
         }),
-      });
-      const json = await res.json().catch(() => ({}));
+      })
+      const json = await res.json().catch(() => ({}))
       if (!res.ok) {
-        setError(json.error || "Не вдалося створити замовлення");
-        return;
+        setError(json.error || "Не вдалося створити замовлення")
+        return
       }
-      router.push("/");
-      router.refresh();
+      router.push("/")
+      router.refresh()
     } catch {
-      setError("Помилка мережі. Перевір сервер.");
+      setError("Помилка мережі. Перевір сервер.")
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
-  };
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-[1520px] flex-col gap-space-lg py-gutter-desktop">
@@ -163,10 +159,7 @@ export const CreateOrderForm = () => {
             <ChevronRight size={14} className="text-outline" />
             <span className="font-semibold text-primary">Новий ремонт</span>
           </nav>
-          <div className="mt-1 flex items-baseline gap-space-md">
-            <h1 className="font-headline-section text-headline-section text-on-surface tracking-tight">Реєстрація нового замовлення</h1>
-            <span className="rounded-full bg-surface-container-high px-2.5 py-0.5 font-data-mono-sm text-data-mono-sm font-bold text-primary">Створення акту</span>
-          </div>
+          <h1 className="font-headline-section text-headline-section text-on-surface tracking-tight">Реєстрація нового замовлення</h1>
           <p className="max-w-2xl font-body-default text-body-default text-on-surface-variant">
             Внесіть інформацію про пристрій клієнта та контактні дані для створення замовлення.
           </p>
@@ -230,12 +223,12 @@ export const CreateOrderForm = () => {
                 <span className="font-caption-label text-caption-label font-medium text-on-surface-variant">Швидкий вибір типу робіт:</span>
                 <div className="flex flex-wrap gap-2">
                   {quickTags.map((tag) => {
-                    const active = form.description.includes(tag);
+                    const active = form.description.includes(tag)
                     return (
                       <button key={tag} type="button" onClick={() => toggleTag(tag)} className={`flex items-center gap-1 rounded-lg px-3 py-1 font-caption-label text-caption-label font-body-strong transition-colors ${active ? "bg-primary text-on-primary shadow-sm" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
                         {active ? <Check size={14} /> : "+"} {tag.replace(/^\+ /, "")}
                       </button>
-                    );
+                    )
                   })}
                 </div>
               </div>
@@ -310,13 +303,13 @@ export const CreateOrderForm = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-const inputBoxCls = "bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-default font-body-default text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all";
-const inputCls = `w-full py-2 pl-9 pr-3 ${inputBoxCls}`;
+const inputBoxCls = "bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-default font-body-default text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+const inputCls = `w-full py-2 pl-9 pr-3 ${inputBoxCls}`
 
-function Req() { return <span className="text-error">*</span>; }
+function Req() { return <span className="text-error">*</span> }
 
 function Section({ num, title, hint, children }: { num: string; title: string; hint: React.ReactNode; children: React.ReactNode }) {
   return (
@@ -330,7 +323,7 @@ function Section({ num, title, hint, children }: { num: string; title: string; h
       </div>
       {children}
     </section>
-  );
+  )
 }
 
 function Field({ label, htmlFor, hint, hintRight, className, children }: { label: React.ReactNode; htmlFor?: string; hint?: React.ReactNode; hintRight?: React.ReactNode; className?: string; children: React.ReactNode }) {
@@ -343,7 +336,7 @@ function Field({ label, htmlFor, hint, hintRight, className, children }: { label
       </div>
       {children}
     </div>
-  );
+  )
 }
 
 function InputWrap({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
@@ -352,7 +345,7 @@ function InputWrap({ icon, children }: { icon: React.ReactNode; children: React.
       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline">{icon}</span>
       {children}
     </div>
-  );
+  )
 }
 
 function PreviewRow({ label, value, mono, primary }: { label: string; value: string; mono?: boolean; primary?: boolean }) {
@@ -361,5 +354,5 @@ function PreviewRow({ label, value, mono, primary }: { label: string; value: str
       <span className="font-caption-label text-caption-label text-on-surface-variant">{label}</span>
       <span className={`${mono ? "font-data-mono text-data-mono" : "font-caption-label text-caption-label"} truncate ${primary ? "font-bold text-primary" : "font-semibold text-on-surface"}`}>{value}</span>
     </div>
-  );
+  )
 }
